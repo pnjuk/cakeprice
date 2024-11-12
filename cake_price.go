@@ -7,6 +7,7 @@ import (
 func main() {
 	var hasFillings string
 	var minWeight float64
+	var hasEatablePrint string
 
 	// Ask for the minimal weight of the cake
 	fmt.Print("Enter the minimal weight of the cake (e.g., 1.5): ")
@@ -20,6 +21,11 @@ func main() {
 	fmt.Print("Do cake have various fillings? (yes/no): ")
 	fmt.Scanf("%s", &hasFillings)
 
+	// Ask if there's an eatable print option
+	fmt.Print("Is there an eatable print option? (yes/no): ")
+	fmt.Scanf("%s", &hasEatablePrint)
+	addPrintCost := hasEatablePrint == "yes"
+
 	if hasFillings == "no" {
 		var price float64
 
@@ -31,13 +37,15 @@ func main() {
 			return
 		}
 
-		// Use initial logic for cakes without fillings
+		// Calculate prices for cakes without fillings
 		for multiplier := minWeight; multiplier <= 6; multiplier += 0.5 {
-			result := price * multiplier
-			printYes := result + 7
-
-			// Print the weight and results
-			fmt.Printf("Weight: %.1f KG, Price without print: %.2f, Print yes: %.2f\n", multiplier, result, printYes)
+			basePrice := price * multiplier
+			if addPrintCost {
+				priceWithPrint := basePrice + 7
+				fmt.Printf("Weight: %.1f KG, Base Price: %.2f, Price with Print: %.2f\n", multiplier, basePrice, priceWithPrint)
+			} else {
+				fmt.Printf("Weight: %.1f KG, Base Price: %.2f\n", multiplier, basePrice)
+			}
 		}
 	} else if hasFillings == "yes" {
 		// Define the default prices for fillings
@@ -77,12 +85,18 @@ func main() {
 		for weight := minWeight; weight <= 4; weight += 0.5 {
 			for filling, fillingPrice := range fillings {
 				pricePerKilo := fillingPrice / 1.5
-				totalPrice := pricePerKilo * weight
-				fmt.Printf("Weight: %.1f KG, Filling: %s, Total Price: %.2f EUR\n", weight, filling, totalPrice)
+				basePrice := pricePerKilo * weight
+				if addPrintCost {
+					priceWithPrint := basePrice + 7
+					fmt.Printf("Weight: %.1f KG, Filling: %s, Base Price: %.2f EUR, Price with Print: %.2f EUR\n", weight, filling, basePrice, priceWithPrint)
+				} else {
+					fmt.Printf("Weight: %.1f KG, Filling: %s, Base Price: %.2f EUR\n", weight, filling, basePrice)
+				}
 			}
 		}
 	} else {
 		fmt.Println("Invalid input for fillings. Please enter 'yes' or 'no'.")
 	}
 }
+
 
