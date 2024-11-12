@@ -6,7 +6,7 @@ import (
 
 func main() {
 	var hasFillings string
-	var minWeight float64
+	var minWeight, maxWeight float64
 	var hasEatablePrint string
 
 	// Ask for the minimal weight of the cake
@@ -14,6 +14,14 @@ func main() {
 	_, err := fmt.Scanf("%f", &minWeight)
 	if err != nil || minWeight < 1.5 {
 		fmt.Println("Invalid input. Please enter a valid weight (minimum 1.5).")
+		return
+	}
+
+	// Ask for the maximal weight of the cake
+	fmt.Print("Enter the maximal weight of the cake (e.g., 6): ")
+	_, err = fmt.Scanf("%f", &maxWeight)
+	if err != nil || maxWeight > 6 || maxWeight < minWeight {
+		fmt.Println("Invalid input. Please enter a valid weight (maximum up to 6 and greater than or equal to the minimum weight).")
 		return
 	}
 
@@ -38,7 +46,7 @@ func main() {
 		}
 
 		// Calculate prices for cakes without fillings
-		for multiplier := minWeight; multiplier <= 6; multiplier += 0.5 {
+		for multiplier := minWeight; multiplier <= maxWeight; multiplier += 0.5 {
 			basePrice := price * multiplier
 			if addPrintCost {
 				priceWithPrint := basePrice + 7
@@ -81,8 +89,8 @@ func main() {
 			}
 		}
 
-		// Calculate prices for each filling from minWeight to 4 KG
-		for weight := minWeight; weight <= 4; weight += 0.5 {
+		// Calculate prices for each filling from minWeight to maxWeight
+		for weight := minWeight; weight <= maxWeight; weight += 0.5 {
 			for filling, fillingPrice := range fillings {
 				pricePerKilo := fillingPrice / 1.5
 				basePrice := pricePerKilo * weight
@@ -98,5 +106,3 @@ func main() {
 		fmt.Println("Invalid input for fillings. Please enter 'yes' or 'no'.")
 	}
 }
-
-
