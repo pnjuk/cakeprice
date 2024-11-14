@@ -36,7 +36,7 @@ func main() {
 	// Get minimal weight
 	minWeight, err := getFloatInput("Enter the minimal weight of the cake (e.g., 1.0): ", 1.0, 0)
 	if err != nil {
-		fmt.Println("Invalid input. Please enter a valid weight (minimum 1.5).")
+		fmt.Println("Invalid input. Please enter a valid weight (minimum 1.0).")
 		return
 	}
 
